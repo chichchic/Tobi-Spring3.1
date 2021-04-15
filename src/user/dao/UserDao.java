@@ -4,9 +4,14 @@ import user.domain.User;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao(){
+        simpleConnectionMaker = new SimpleConnectionMaker();
+    }
     public void add(User user) throws ClassNotFoundException, SQLException{
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNuewConnection();
         // 관심사 2: 사용자 등록을 위해 DB에 보낼 SQL문을 담은 Statement를 만들고 실행
         PreparedStatement ps =
                 c.prepareStatement("INSERT INTO users(id, name, password) values(?, ? ,?)");
@@ -23,7 +28,7 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException{
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNuewConnection();
 
         PreparedStatement ps =
             c.prepareStatement("SELECT * FROM users WHERE id = ?");
@@ -41,6 +46,4 @@ public abstract class UserDao {
 
         return user;
     }
-
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }

@@ -4,7 +4,7 @@ import user.domain.User;
 
 import java.sql.*;
 
-public class UserDao {
+public abstract class UserDao {
     public void add(User user) throws ClassNotFoundException, SQLException{
         Connection c = getConnection();
         // 관심사 2: 사용자 등록을 위해 DB에 보낼 SQL문을 담은 Statement를 만들고 실행
@@ -42,12 +42,5 @@ public class UserDao {
         return user;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        String DB_URL = "jdbc:mysql://localhost/springbook";
-        String USER_NAME = "root";
-        String PASSWORD = "root";
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(DB_URL, USER_NAME, PASSWORD);
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }

@@ -5,13 +5,13 @@ import user.domain.User;
 import java.sql.*;
 
 public class UserDao {
-    private SimpleConnectionMaker simpleConnectionMaker;
+    private ConnectionMaker connectionMaker;
 
     public UserDao(){
-        simpleConnectionMaker = new SimpleConnectionMaker();
+        connectionMaker = new MySqlConnectionMaker();
     }
     public void add(User user) throws ClassNotFoundException, SQLException{
-        Connection c = simpleConnectionMaker.makeNuewConnection();
+        Connection c = connectionMaker.makeConnection();
         // 관심사 2: 사용자 등록을 위해 DB에 보낼 SQL문을 담은 Statement를 만들고 실행
         PreparedStatement ps =
                 c.prepareStatement("INSERT INTO users(id, name, password) values(?, ? ,?)");
@@ -28,7 +28,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException{
-        Connection c = simpleConnectionMaker.makeNuewConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps =
             c.prepareStatement("SELECT * FROM users WHERE id = ?");

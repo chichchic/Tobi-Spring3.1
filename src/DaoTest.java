@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class DaoTest {
     public static void main(String[] args) throws SQLException {
-        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new GenericXmlApplicationContext("countingApplicationContext.xml");
         UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
@@ -26,7 +26,7 @@ public class DaoTest {
 
         System.out.println(user.getId() + " Inquiry Success");
 
-//        CountingSimpleDataSource csds = context.getBean("dataSource", CountingSimpleDataSource.class);
-//        System.out.println("Connection counter: " + csds.getCounter());
+        CountingSimpleDataSource csds = context.getBean("dataSource", CountingSimpleDataSource.class);
+        System.out.println("Connection counter: " + csds.getCounter());
     }
 }

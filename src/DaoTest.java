@@ -1,5 +1,6 @@
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import user.dao.*;
 import user.domain.User;
 
@@ -7,7 +8,7 @@ import java.sql.SQLException;
 
 public class DaoTest {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
+        ApplicationContext context = new GenericXmlApplicationContext("countingApplicationContext.xml");
         UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();

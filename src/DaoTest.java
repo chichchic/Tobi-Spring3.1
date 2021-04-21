@@ -1,15 +1,14 @@
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import user.dao.*;
 import user.domain.User;
 
 import java.sql.SQLException;
 
 public class DaoTest {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = context.getBean("userDao", UserDao.class);
+    public static void main(String[] args) throws SQLException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFatory.class);
+        UserDao dao = context.getBean("setUserDao", UserDao.class);
 
         User user = new User();
         user.setId("whiteship");
@@ -25,5 +24,8 @@ public class DaoTest {
         System.out.println(user2.getPassword());
 
         System.out.println(user.getId() + " Inquiry Success");
+
+        CountingSimpleDataSource csds = context.getBean("dataSource", CountingSimpleDataSource.class);
+        System.out.println("Connection counter: " + csds.getCounter());
     }
 }

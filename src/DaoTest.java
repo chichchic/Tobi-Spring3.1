@@ -12,21 +12,24 @@ public class DaoTest {
         UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
-        user.setId("whiteship");
+        user.setId("white ship");
         user.setName("백기선");
-        user.setPassword("maarried");
+        user.setPassword("married");
 
         dao.add(user);
 
-        System.out.println(user.getId() + " Register Success");
+        System.out.println("Register Success");
 
         User user2 = dao.get(user.getId());
-        System.out.println(user2.getName());
-        System.out.println(user2.getPassword());
 
-        System.out.println(user.getId() + " Inquiry Success");
-
-        CountingSimpleDataSource csds = context.getBean("dataSource", CountingSimpleDataSource.class);
-        System.out.println("Connection counter: " + csds.getCounter());
+        if(!user.getName().equals(user2.getName())){
+            System.out.println("Test Fail :: (name)");
+        }
+        else if(!user.getPassword().equals(user2.getPassword())) {
+            System.out.println("Test Fail :: (password)");
+        }
+        else {
+            System.out.println("Inquiry Success");
+        }
     }
 }

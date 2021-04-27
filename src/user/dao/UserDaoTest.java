@@ -1,15 +1,23 @@
+package user.dao;
+
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import user.dao.*;
 import user.domain.User;
 
 import java.sql.SQLException;
 
-public class DaoTest {
-    public static void main(String[] args) throws SQLException {
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+public class UserDaoTest {
+    @Test
+    public void addAndGet() throws SQLException {
         ApplicationContext context = new GenericXmlApplicationContext("countingApplicationContext.xml");
         UserDao dao = context.getBean("userDao", UserDao.class);
+
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
 
         User user = new User();
         user.setId("white ship");
@@ -17,19 +25,12 @@ public class DaoTest {
         user.setPassword("married");
 
         dao.add(user);
-
-        System.out.println("Register Success");
+        assertThat(dao.getCount(), is(1));
 
         User user2 = dao.get(user.getId());
 
-        if(!user.getName().equals(user2.getName())){
-            System.out.println("Test Fail :: (name)");
-        }
-        else if(!user.getPassword().equals(user2.getPassword())) {
-            System.out.println("Test Fail :: (password)");
-        }
-        else {
-            System.out.println("Inquiry Success");
-        }
+        assertThat(user.getName(), is(user2.getName()));
+//        assertThat(user.getName(), is("wrong value"));
+        assertThat(user.getPassword(), is(user2.getPassword()));
     }
 }

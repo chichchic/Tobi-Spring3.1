@@ -1,5 +1,6 @@
 package user.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import user.domain.User;
 
 import javax.sql.DataSource;
@@ -12,7 +13,7 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws SQLException {
+    void add(User user) throws SQLException {
         Connection c = dataSource.getConnection();
         // 관심사 2: 사용자 등록을 위해 DB에 보낼 SQL문을 담은 Statement를 만들고 실행
         PreparedStatement ps =
@@ -29,27 +30,32 @@ public class UserDao {
         // 그 외: 예외 처리x,
     }
 
-    public User get(String id) throws SQLException {
+    User get(String id) throws SQLException {
         Connection c = dataSource.getConnection();
 
         PreparedStatement ps =
                 c.prepareStatement("SELECT * FROM users WHERE id = ?");
         ps.setString(1, id);
         ResultSet rs = ps.executeQuery();
-        rs.next();
-        User user = new User();
-        user.setId(rs.getString("id"));
-        user.setName(rs.getString("name"));
-        user.setPassword(rs.getString("password"));
+
+        User user = null;
+        if (rs.next()) {
+            user = new User();
+            user.setId(rs.getString("id"));
+            user.setName(rs.getString("name"));
+            user.setPassword(rs.getString("password"));
+        }
 
         rs.close();
         ps.close();
         c.close();
 
+        if(user == null) throw new EmptyResultDataAccessException(1);
+
         return user;
     }
 
-    public void deleteAll() throws SQLException {
+    void deleteAll() throws SQLException {
         Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement("DELETE FROM users");
@@ -59,7 +65,7 @@ public class UserDao {
         c.close();
     }
 
-    public int getCount() throws SQLException {
+    int getCount() throws SQLException {
         Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM users");

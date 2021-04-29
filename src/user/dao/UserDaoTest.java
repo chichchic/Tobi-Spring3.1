@@ -19,8 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.xml")
-@DirtiesContext
+@ContextConfiguration(locations = "/test-applicationContext.xml")
 public class UserDaoTest {
     @Autowired
     private UserDao dao;
@@ -35,9 +34,6 @@ public class UserDaoTest {
         this.user2 = new User("leegw700", "lee", "springno2");
         this.user3 = new User("bumjin", "paark", "springno2");
 
-        DataSource dataSource
-                = new SingleConnectionDataSource("jdbc:mysql://localhost/testdb", "root", "root", true);
-        dao.setDataSource(dataSource);
     }
 
     @Test

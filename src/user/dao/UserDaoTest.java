@@ -18,10 +18,7 @@ import java.sql.SQLException;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
 public class UserDaoTest {
-    @Autowired
     private UserDao dao;
 
     private User user1;
@@ -34,6 +31,9 @@ public class UserDaoTest {
         this.user2 = new User("leegw700", "lee", "springno2");
         this.user3 = new User("bumjin", "paark", "springno2");
 
+        dao = new UserDao();
+        DataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost/testdb", "root", "root", true);
+        dao.setDataSource(dataSource);
     }
 
     @Test

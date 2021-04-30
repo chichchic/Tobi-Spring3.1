@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/junit.xml")
+@ContextConfiguration("/learningtest/junit/junitApplicationContext.xml")
 public class JUnitTest {
     @Autowired
     ApplicationContext context;
